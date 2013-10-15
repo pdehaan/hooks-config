@@ -1,0 +1,21 @@
+{
+  "name": "hooks-config",
+  "version": "0.0.0",
+  "description": "simplify interacting with the hooks.json config options",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Matthew Chase Whittemore <mcwhittemore@gmail.com>",
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "mocha": "~1.13.0",
+    "node-hooks": "0.0.15",
+    "beautify.hks": "0.0.1",
+    "esprima.hks": "0.0.0",
+    "should": "~2.0.1"
+  },
+  "dependencies": {
+    "colors": "~0.6.2"
+  }
+}
