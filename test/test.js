@@ -11,8 +11,10 @@ describe("as a hook-module I want to", function() {
         });
 
         it("see the full hooks.json file", function() {
-            var file = hooksConfig.readFile();
-            file.should.equal(require("./hooks.json"));
+            var file = hooksConfig.readFile(function(err, file){
+                file.should.equal(require("./hooks.json"));
+                done(err);
+            });
         });
     });
 
@@ -39,18 +41,26 @@ describe("as a hook-module I want to", function() {
                 "foo": "bar"
             }
             newConfig.save(obj);
-            var file = hooksConfig.readFile();
-            file.config.unconfigured.should.equal(obj);
+            var file = hooksConfig.readFile(function(err, file){
+                file.config.unconfigured.should.equal(obj);
+                done(err);
+            });
         });
 
-        it("overwriting exhisting config", function() {
+        it("overwriting exhisting config", function(done) {
             var oldConfig = hooksConfig("configured");
             var obj = {
                 "foo": "bar"
             }
-            oldConfig.save(obj);
-            var file = hooksConfig.readFile();
-            file.config.unconfigured.should.equal(obj);
+            oldConfig.save(obj, function(err){
+                if(err){
+                    done(err);
+                }
+                hooksConfig.readFile(function(err, file){
+                    file.config.unconfigured.should.equal(obj);
+                    done(err);
+                });
+            });
         });
     });
 
