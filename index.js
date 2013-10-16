@@ -8,37 +8,40 @@ var saveJson = function(json, callback) {
     fs.writeFile(hooksJsonPath, content, callback);
 }
 
-module.exports = function(hookModule) {
+var publicApi = {
+    hookModule: process.env.npm_package_name,
+    view: function() {
 
-    var publicApi = {
-    	view: function(){
-
-    	},
-    	save: function(json, callback){
-    		module.exports.readFile(function(err, data){
-    			if(err){
-    				callback(err);
-    			}
-    			else{
-    				data.config = data.config || {};
-    				data.config[hookModule] = json;
-    				saveJson(data, callback);
-    			}
-    		});
-    		return saveJson(json, callback);
-    	}
+    },
+    save: function(json, callback) {
+        module.exports.readFile(function(err, data) {
+            if (err) {
+                callback(err);
+            } else {
+                data.config = data.config || {};
+                data.config[publicApi.hookModule] = json;
+                saveJson(data, callback);
+            }
+        });
+        return saveJson(json, callback);
+    },
+    readFile: function(callback) {
+        fs.readFile(hooksJsonPath, {
+            encoding: "utf8"
+        }, function(err, data) {
+            if (err) {
+                callback(err);
+            } else {
+                var error = err;
+                try {
+                    var file = JSON.parse(data);
+                } catch (err) {
+                    error = err;
+                }
+                callback(error, file);
+            }
+        });
     }
-
-    return publicApi;
 }
 
-module.exports.readFile = function(callback) {
-	fs.readFile("hooks.json", function(err, data) {
-        try {
-            var file = JSON.parse(data);
-            callback(null, file);
-        } catch (err) {
-            callback(err);
-        }
-    });
-}
+module.exports = publicApi;
