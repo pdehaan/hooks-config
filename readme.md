@@ -17,3 +17,9 @@ hksConfig.view(function(data){
 	});
 });
 ```
+
+## Change Log
+
+### 0.0.0
+
+* mvp
