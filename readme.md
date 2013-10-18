@@ -23,3 +23,7 @@ hksConfig.view(function(data){
 ### 0.0.0
 
 * mvp
+
+### 0.0.1
+
+* bug fix with undefined config object
