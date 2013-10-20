@@ -1,8 +1,12 @@
 var fs = require("fs");
 var colors = require("colors");
 
+var thePath = function() {
+    return publicApi.project ? publicApi.cwd + "/hooks.json" : publicApi.cwd + "/.git/hooks.json";
+}
+
 var saveJson = function(json, callback) {
-    var hooksJsonPath = publicApi.cwd + "/hooks.json";
+    var hooksJsonPath = thePath();
     var content = JSON.stringify(json, null, 2) + '\n';
     fs.writeFile(hooksJsonPath, content, callback);
 }
@@ -10,6 +14,7 @@ var saveJson = function(json, callback) {
 var publicApi = {
     hookModule: process.env.npm_package_name,
     cwd: process.cwd(),
+    project: true,
     view: function(callback) {
         publicApi.readFile(function(err, json) {
             if (err) {
@@ -32,12 +37,16 @@ var publicApi = {
         });
     },
     readFile: function(callback) {
-        var hooksJsonPath = publicApi.cwd + "/hooks.json";
+        var hooksJsonPath = thePath();
         fs.readFile(hooksJsonPath, {
             encoding: "utf8"
         }, function(err, data) {
             if (err) {
-                callback(err);
+                if (err.errno == 34) {
+                    callback(null, {});
+                } else {
+                    callback(err);
+                }
             } else {
                 var error = err;
                 try {
