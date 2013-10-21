@@ -33,6 +33,7 @@ cleanup = function(callback) {
 }
 
 beforeEach(function(done) {
+    //console.log("BEFORE EACH");
     cleanup(function(err) {
         if (err) {
             done(err);
@@ -42,7 +43,10 @@ beforeEach(function(done) {
                     done(err || new Error(stderr));
                 } else {
                     var content = JSON.stringify(baseHooks);
-                    fs.writeFile(test_folder + "/hooks.json", content, done);
+                    fs.writeFile(test_folder + "/hooks.json", content, function(err) {
+                        //console.log("NEWLY WRITTEN");
+                        done(err);
+                    });
                 }
             });
         }
@@ -76,7 +80,6 @@ describe("as a hook-module I want to", function() {
             var config = newConfig("unconfigured");
             config.project = false;
             config.view(function(err, data) {
-                console.log(err);
                 JSON.stringify(data).should.equal("{}");
                 done(err);
             });
@@ -92,6 +95,7 @@ describe("as a hook-module I want to", function() {
             });
         });
 
+        //something about the tests lets this work on its own, but not with others.
         it.skip("and should get a full filled object if one has been created", function(done) {
             var config = newConfig();
             config.view(function(err, data) {
@@ -104,7 +108,6 @@ describe("as a hook-module I want to", function() {
     });
 
     describe("save a config", function() {
-        //fail
         it("creating new entity if none has been created before", function(done) {
             var config = newConfig("unconfigured");
             var obj = {
