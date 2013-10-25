@@ -17,5 +17,12 @@
   },
   "dependencies": {
     "colors": "~0.6.2"
-  }
+  },
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:mcwhittemore/hooks-config.git"
+  },
+  "bugs": "https://github.com/mcwhittemore/hooks-config/issues",
+  "homepage": "https://github.com/mcwhittemore/hooks-config"
 }
